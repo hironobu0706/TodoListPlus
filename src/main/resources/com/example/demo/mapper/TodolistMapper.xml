@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.TodolistMapper">
+	<select id="getTodolist">
+		select
+			*
+		from todolist
+	</select>
+	<select id="getTodolistWithId" resultType="com.example.demo.model.Todolist">
+		select
+			id,
+			contents,
+			tag,
+			status,
+			deadline
+		from todolist
+		where id = #{id}
+	</select>
+	<update id="updateTodolist">
+		update
+			Todolist
+		set
+			contents = #{contents},
+			tag = #{tag},
+			status = #{status},
+			deadline = #{deadline}
+		where
+			id = #{id}
+	</update>
+	<delete id="deleteTodoWithId">
+		delete
+		from
+			Todolist
+		where
+			id = #{id}
+	</delete>
+	<insert id="createTodo">
+		insert into todolist (
+			contents,
+			tag,
+			status,
+			deadline)
+		values(
+			#{contents},
+			#{tag},
+			#{status},
+			#{deadline});
+	</insert>
+	<update id="completeTodolistWithId">
+		update
+			Todolist
+		set
+			status = 9
+		where
+			id = #{id}
+	</update>
+</mapper>
