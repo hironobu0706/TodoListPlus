@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Schedule;
-import com.example.demo.service.ScheduleService;
+import com.example.demo.repository.ScheduleRepository;
 
 @RestController
 @RequestMapping("api")
@@ -16,7 +16,7 @@ import com.example.demo.service.ScheduleService;
 public class ScheduleController {
 
 	@Autowired
-	private ScheduleService service;
+	private ScheduleRepository service;
 
 	@GetMapping("/schedule/listView")
 	public Schedule getScheduleWithDate(@RequestParam("taget_date") String taget_date) {

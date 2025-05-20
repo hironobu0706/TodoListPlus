@@ -2,6 +2,8 @@
 "use client" // ←※※注意ポイント①※※
 
 // import React, { useState } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const Schedule = () => {
     // const weeks = ['日', '月', '火', '水', '木', '金', '土']
@@ -108,9 +110,34 @@ const Schedule = () => {
     return (
         <div className="todo-wrapper">
             <h1>予定表</h1>
-            {/* <button id="prev" type="button">前の月</button>
-            <button id="next" type="button">次の月</button>
-            <div id="calendar"></div> */}
+            <div className="mt20">
+                対象日：{'2025/4/24'}
+            </div>
+
+            <Button variant="contained" onClick={() => alert('追加')}>追加</Button>
+            <table className='scheduleTable'>
+                <tbody>
+                    <tr>
+                        <td>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Required"
+                                defaultValue="Hello World"
+                            /></td>
+                        <td>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Required"
+                                defaultValue="Hello World"
+                            /></td>
+                        <td><Button variant="contained" color="secondary" onClick={() => alert('削除')}>削除</Button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <Button variant="contained" onClick={() => alert('DB反映')}>DB反映</Button>
         </div >
     );
 };

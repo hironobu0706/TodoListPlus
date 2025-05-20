@@ -10,7 +10,14 @@ import { TodoItemInterface } from '../types/types'
 import Button from '@mui/material/Button';
 // import Link from "next/link";
 import { sortTable } from '../util/sortTable';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
+// modal
+// import { AddModal } from './modal/AddModal';
+
+import Modal from "react-modal";
+
+Modal.setAppElement("#todoApp");
 
 const TodoList = () => {
     // タスクと新しいタスク入力を管理するためのuseState
@@ -50,6 +57,30 @@ const TodoList = () => {
         await axios.get(`http://localhost:8080/api/todolist/complete/${id}`);
         loadTodos();
     }
+
+    // modal
+    const [isOpen, setIsOpen] = useState(false);
+    const closeModal = () => {
+        setIsOpen(false);
+    };
+    const openModal = () => {
+        console.log('kiteru');
+        setIsOpen(true);
+    };
+
+    // モーダルのスタイルを設定
+    const modalStyle = {
+        content: {
+            width: '60%',
+            height: '60%',
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+    };
 
     return (
         <div className="todo-wrapper">
@@ -106,6 +137,26 @@ const TodoList = () => {
                 </tbody>
             </table>
             <Button variant="contained" href="create/">追加<AddCircleOutlineIcon /></Button>
+            <Button variant="contained" href="home/">Home<AddCircleOutlineIcon /></Button>
+            <Button variant="contained" href="about/">About<AddCircleOutlineIcon /></Button>
+
+
+            <div onClick={openModal} className="text-sm cursor-pointer">
+                モーダル
+            </div>
+            <Modal
+                isOpen={isOpen}
+                onAfterOpen={() => {
+                    // モーダルが開いた後の処理
+                }}
+                onRequestClose={closeModal}
+                style={modalStyle}
+                contentLabel="Example Modal"
+            >
+                <h2>モーダル</h2>
+                <p>このモーダルの内容です。</p>
+                <button onClick={closeModal}>閉じる</button>
+            </Modal>
         </div>
     );
 };

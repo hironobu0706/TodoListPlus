@@ -4,40 +4,38 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.mapper.TodolistMapper;
 import com.example.demo.model.Todolist;
+import com.example.demo.repository.TodolistRepository;
 
 @Service
-@Transactional
 public class TodolistService {
 
-
-	@Autowired
-	private TodolistMapper mapper;
+    @Autowired
+    private TodolistRepository todolistRepository;
 
 	public List<Todolist> getTodolist() {
-		return mapper.getTodolist();
+		return todolistRepository.getTodolist();
 	}
 
 	public Todolist getTodolistWithId(int id) {
-		return mapper.getTodolistWithId(id);
+		return todolistRepository.getTodolistWithId(id);
 	}
-
+	
 	public int updateTodolist(Todolist todolist) {
-		return mapper.updateTodolist(todolist);
+
+		return todolistRepository.updateTodolist(todolist);
 	}
 
 	public int deleteTodoWithId(int id) {
-		return mapper.deleteTodoWithId(id);
-	}
-	
-	public int createTodo(Todolist todolist) {
-		return mapper.createTodo(todolist);
+		return todolistRepository.deleteTodoWithId(id);
 	}
 
+    public int createTodo(Todolist todolist) {
+        return todolistRepository.createTodo(todolist);
+    }
+
 	public int completeTodolistWithId(int id) {
-		return mapper.completeTodolistWithId(id);
+		return todolistRepository.completeTodolistWithId(id);
 	}
 }
