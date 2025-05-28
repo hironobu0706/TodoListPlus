@@ -13,11 +13,7 @@ import { sortTable } from '../util/sortTable';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 // modal
-// import { AddModal } from './modal/AddModal';
-
-import Modal from "react-modal";
-
-Modal.setAppElement("#todoApp");
+import AddTodoModal from './modal/AddTodoModal';
 
 const TodoList = () => {
     // タスクと新しいタスク入力を管理するためのuseState
@@ -58,29 +54,17 @@ const TodoList = () => {
         loadTodos();
     }
 
+    
     // modal
     const [isOpen, setIsOpen] = useState(false);
-    const closeModal = () => {
-        setIsOpen(false);
-    };
     const openModal = () => {
-        console.log('kiteru');
         setIsOpen(true);
     };
-
-    // モーダルのスタイルを設定
-    const modalStyle = {
-        content: {
-            width: '60%',
-            height: '60%',
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-        },
+    const closeModal = () => {
+        setIsOpen(false);
+        loadTodos();
     };
+
 
     return (
         <div className="todo-wrapper">
@@ -136,27 +120,16 @@ const TodoList = () => {
                     })}
                 </tbody>
             </table>
-            <Button variant="contained" href="create/">追加<AddCircleOutlineIcon /></Button>
-            <Button variant="contained" href="home/">Home<AddCircleOutlineIcon /></Button>
-            <Button variant="contained" href="about/">About<AddCircleOutlineIcon /></Button>
+            <Button variant="contained" onClick={openModal}>追加<AddCircleOutlineIcon /></Button>
 
 
-            <div onClick={openModal} className="text-sm cursor-pointer">
+            {/* <div onClick={openModal} className="text-sm cursor-pointer">
                 モーダル
-            </div>
-            <Modal
-                isOpen={isOpen}
-                onAfterOpen={() => {
-                    // モーダルが開いた後の処理
-                }}
-                onRequestClose={closeModal}
-                style={modalStyle}
-                contentLabel="Example Modal"
-            >
-                <h2>モーダル</h2>
-                <p>このモーダルの内容です。</p>
-                <button onClick={closeModal}>閉じる</button>
-            </Modal>
+            </div> */}
+            <AddTodoModal 
+              isOpen={isOpen}
+              closeModal={closeModal}
+            />
         </div>
     );
 };
