@@ -1,37 +1,39 @@
-// クライアントコンポーネント
-"use client" // ←※※注意ポイント①※※
-import React, { useState } from 'react';
+"use client";
+
+import { useState } from 'react';
 import axios from 'axios';
-import Modal from "react-modal";
 import Button from '@mui/material/Button';
+import Modal from "react-modal";
 import "./AddTodoModal.scss"
 
 Modal.setAppElement("#todoApp");
 
-const AddTodoModal = ({ addModalIsOpen, closeAddModal }) => {
-
-    // 日付取得
-    const fullDate = new Date();
-    const year = fullDate.getFullYear();
-    const month = String(fullDate.getMonth() + 1).padStart(2, '0');
-    const day = String(fullDate.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
+const EditTodoModal = ({ editModalIsOpen, closeEditModal, id }) => {
 
     // 入力項目
     const [tag, setTag] = useState('');
     const [contents, setContents] = useState('');
-    const [status, setStatus] = useState('0');
-    const [deadline, setDeadline] = useState(formattedDate);
+    const [status, setStatus] = useState('');
+    const [deadline, setDeadline] = useState('');
 
-    const createTodo = async () => {
-        await axios.post("http://localhost:8080/api/create",
+    const updateTodo = async () => {
+        await axios.put(`http://localhost:8080/api/todolist/update`,
             {
+                id,
                 tag,
                 contents,
                 status,
                 deadline
             });
-        location.href = "";
+        location.href="";
+    }
+
+    const loadTodo = async () => {
+        const result = await axios.get(`http://localhost:8080/api/todolist/${id}`);
+        setTag(result.data.tag);
+        setContents(result.data.contents);
+        setStatus(result.data.status);
+        setDeadline(result.data.deadline);
     }
 
     // モーダルのスタイルを設定
@@ -50,16 +52,17 @@ const AddTodoModal = ({ addModalIsOpen, closeAddModal }) => {
 
     return (
         <Modal
-            isOpen={addModalIsOpen}
+            isOpen={editModalIsOpen}
             onAfterOpen={() => {
                 // モーダルが開いた後の処理
+                loadTodo();
             }}
-            onRequestClose={closeAddModal}
+            onRequestClose={closeEditModal}
             style={modalStyle}
             contentLabel="Example Modal"
         >
-            <div className="addTodoModalWrapper">
-                <h1>Todoを追加</h1>
+            <div className="todo-wrapper">
+                <h1>Todoを編集</h1>
                 <div>
                     <label htmlFor="Name">カテゴリ</label>
                     <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} />
@@ -70,10 +73,11 @@ const AddTodoModal = ({ addModalIsOpen, closeAddModal }) => {
                 </div>
                 <div>
                     <label htmlFor="Name">ステータス</label>
-                    <select onChange={(e) => setStatus(e.target.value)}>
+                    <select value={status} onChange={(e) => setStatus(e.target.value)}>
                         <option value="0">未</option>
                         <option value="9">完了</option>
                     </select>
+                    {/* <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} /> */}
                 </div>
                 <div>
                     <label htmlFor="Name">期日</label>
@@ -81,7 +85,7 @@ const AddTodoModal = ({ addModalIsOpen, closeAddModal }) => {
                 </div>
                 <br />
                 <div>
-                    <Button variant="contained" onClick={createTodo}>登録</Button>
+                    <Button variant="contained" onClick={updateTodo}>更新</Button>
                     <Button variant="outlined" href="/">キャンセル</Button>
                 </div>
             </div>
@@ -89,4 +93,4 @@ const AddTodoModal = ({ addModalIsOpen, closeAddModal }) => {
     )
 }
 
-export default AddTodoModal;
+export default EditTodoModal;

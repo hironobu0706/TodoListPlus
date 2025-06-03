@@ -14,10 +14,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 // modal
 import AddTodoModal from './modal/AddTodoModal';
+import EditTodoModal from './modal/EditTodoModal';
 
 const TodoList = () => {
     // タスクと新しいタスク入力を管理するためのuseState
     const [tasks, setTasks] = useState<Array<TodoItemInterface>>([]); // ←※※注意ポイント②※※
+    const [tmpEditId, setTmpEditId]  = useState<string>("");
 
     useEffect(() => {
         loadTodos();
@@ -56,13 +58,23 @@ const TodoList = () => {
 
     
     // modal
-    const [isOpen, setIsOpen] = useState(false);
-    const openModal = () => {
-        setIsOpen(true);
+    const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+    const [EditModalIsOpen, setEditModalIsOpen] = useState(false);
+    const openAddModal = () => {
+        setAddModalIsOpen(true);
     };
-    const closeModal = () => {
-        setIsOpen(false);
+    const closeAddModal = () => {
+        setAddModalIsOpen(false);
         loadTodos();
+    };
+    const closeEditModal = () => {
+        setEditModalIsOpen(false);
+        loadTodos();
+    };
+    
+    const openEditModal = (id:string) => {
+        setEditModalIsOpen(true);
+        setTmpEditId(id);
     };
 
 
@@ -105,7 +117,8 @@ const TodoList = () => {
                                 <td>{task.contents}</td>
                                 <td>{status}</td>
                                 <td>{task.deadline}</td>
-                                <td><Button variant="contained" href={`edit?id=${task.id}`}>編集</Button></td>
+                                 {/* href={`edit?id=${task.id}`} */}
+                                <td><Button variant="contained" onClick={() => openEditModal(String(task.id))}>編集</Button></td>
                                 <td>
                                     {(() => {
                                         if (task.status === 0) {
@@ -120,16 +133,18 @@ const TodoList = () => {
                     })}
                 </tbody>
             </table>
-            <Button variant="contained" onClick={openModal}>追加<AddCircleOutlineIcon /></Button>
-
-
-            {/* <div onClick={openModal} className="text-sm cursor-pointer">
-                モーダル
-            </div> */}
+            <Button variant="contained" onClick={openAddModal}>追加<AddCircleOutlineIcon /></Button>
             <AddTodoModal 
-              isOpen={isOpen}
-              closeModal={closeModal}
+              addModalIsOpen={addModalIsOpen}
+              closeAddModal={closeAddModal}
             />
+            
+            <EditTodoModal 
+              editModalIsOpen={EditModalIsOpen}
+              closeEditModal={closeEditModal}
+              id={tmpEditId}
+            />
+            
         </div>
     );
 };
