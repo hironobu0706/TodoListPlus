@@ -61,7 +61,7 @@ const EditTodoModal = ({ editModalIsOpen, closeEditModal, id }) => {
             style={modalStyle}
             contentLabel="Example Modal"
         >
-            <div className="todo-wrapper">
+            <div className="editTodoModalWrapper">
                 <h1>Todoを編集</h1>
                 <div>
                     <label htmlFor="Name">カテゴリ</label>

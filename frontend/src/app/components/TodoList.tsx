@@ -80,7 +80,7 @@ const TodoList = () => {
 
     return (
         <div className="todo-wrapper">
-            <h1>Todo</h1>
+            <h1>Todo一覧</h1>
             <table className='todo_tables' id="data-table">
                 <tbody>
                     <tr>
