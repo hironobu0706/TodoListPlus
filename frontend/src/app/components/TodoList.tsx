@@ -14,11 +14,11 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 // modal
 import AddTodoModal from './modal/AddTodoModal';
-import EditTodoModal from './modal/EditTodoModal';
+// import EditTodoModal from './modal/old_EditTodoModal';
 
 const TodoList = () => {
     // タスクと新しいタスク入力を管理するためのuseState
-    const [tasks, setTasks] = useState<Array<TodoItemInterface>>([]); // ←※※注意ポイント②※※
+    const [tasks, setTasks] = useState<TodoItemInterface[]>([]); // ←※※注意ポイント②※※
     const [tmpEditId, setTmpEditId]  = useState<string>("");
 
     useEffect(() => {
@@ -59,35 +59,32 @@ const TodoList = () => {
     
     // modal
     const [addModalIsOpen, setAddModalIsOpen] = useState(false);
-    const [EditModalIsOpen, setEditModalIsOpen] = useState(false);
+    // const [EditModalIsOpen] = useState(false); //setEditModalIsOpen
     const openAddModal = () => {
+        setTmpEditId('');
         setAddModalIsOpen(true);
     };
     const closeAddModal = () => {
         setAddModalIsOpen(false);
         loadTodos();
     };
-    const closeEditModal = () => {
-        setEditModalIsOpen(false);
-        loadTodos();
-    };
+    // const closeEditModal = () => {
+    //     setAddModalIsOpen(false);
+    //     loadTodos();
+    // };
     
     const openEditModal = (id:string) => {
-        setEditModalIsOpen(true);
         setTmpEditId(id);
+        setAddModalIsOpen(true);
     };
 
 
     return (
         <div className="todo-wrapper">
-            <h1>Todo一覧</h1>
+            <h1>Todo</h1>
             <table className='todo_tables' id="data-table">
                 <tbody>
                     <tr>
-                        {/* <th onClick={() => sortTable(0)}>
-                            id
-                            <span className="sort-arrow"></span>
-                        </th> */}
                         <th onClick={() => sortTable(0)}>
                             カテゴリ
                             <span className="sort-arrow"></span>
@@ -112,12 +109,10 @@ const TodoList = () => {
 
                         return (
                             <tr key={index}>
-                                {/* <td>{task.id}</td> */}
                                 <td>{task.tag}</td>
                                 <td>{task.contents}</td>
                                 <td>{status}</td>
                                 <td>{task.deadline}</td>
-                                 {/* href={`edit?id=${task.id}`} */}
                                 <td><Button variant="contained" onClick={() => openEditModal(String(task.id))}>編集</Button></td>
                                 <td>
                                     {(() => {
@@ -137,14 +132,8 @@ const TodoList = () => {
             <AddTodoModal 
               addModalIsOpen={addModalIsOpen}
               closeAddModal={closeAddModal}
-            />
-            
-            <EditTodoModal 
-              editModalIsOpen={EditModalIsOpen}
-              closeEditModal={closeEditModal}
               id={tmpEditId}
             />
-            
         </div>
     );
 };
