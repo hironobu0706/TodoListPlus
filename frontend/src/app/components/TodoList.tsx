@@ -19,7 +19,7 @@ import AddTodoModal from './modal/AddTodoModal';
 const TodoList = () => {
     // タスクと新しいタスク入力を管理するためのuseState
     const [tasks, setTasks] = useState<TodoItemInterface[]>([]); // ←※※注意ポイント②※※
-    const [tmpEditId, setTmpEditId]  = useState<string>("");
+    const [tmpEditId, setTmpEditId] = useState<string>("");
 
     useEffect(() => {
         loadTodos();
@@ -56,7 +56,7 @@ const TodoList = () => {
         loadTodos();
     }
 
-    
+
     // modal
     const [addModalIsOpen, setAddModalIsOpen] = useState(false);
     // const [EditModalIsOpen] = useState(false); //setEditModalIsOpen
@@ -72,8 +72,8 @@ const TodoList = () => {
     //     setAddModalIsOpen(false);
     //     loadTodos();
     // };
-    
-    const openEditModal = (id:string) => {
+
+    const openEditModal = (id: string) => {
         setTmpEditId(id);
         setAddModalIsOpen(true);
     };
@@ -101,8 +101,7 @@ const TodoList = () => {
                             期日
                             <span className="sort-arrow"></span>
                         </th>
-                        <th>アクション1</th>
-                        <th>アクション2</th>
+                        <th>アクション</th>
                     </tr>
                     {tasks.map((task, index) => {
                         const status = task.status === 0 ? "未" : "完了"
@@ -113,26 +112,24 @@ const TodoList = () => {
                                 <td>{task.contents}</td>
                                 <td>{status}</td>
                                 <td>{task.deadline}</td>
-                                <td><Button variant="contained" onClick={() => openEditModal(String(task.id))}>編集</Button></td>
-                                <td>
+                                <td><Button variant="contained" onClick={() => openEditModal(String(task.id))} sx={{ mr: 2 }}>編集</Button>
                                     {(() => {
                                         if (task.status === 0) {
                                             return <Button variant="outlined" onClick={() => completeTodo(String(task.id))}>完了</Button>;
                                         } else {
                                             return <Button variant="contained" color="secondary" onClick={() => deleteTodo(String(task.id))}>削除</Button>;
                                         }
-                                    })()}
-                                </td>
+                                    })()}</td>
                             </tr>
                         )
                     })}
                 </tbody>
             </table>
             <Button variant="contained" onClick={openAddModal}>追加<AddCircleOutlineIcon /></Button>
-            <AddTodoModal 
-              addModalIsOpen={addModalIsOpen}
-              closeAddModal={closeAddModal}
-              id={tmpEditId}
+            <AddTodoModal
+                addModalIsOpen={addModalIsOpen}
+                closeAddModal={closeAddModal}
+                id={tmpEditId}
             />
         </div>
     );

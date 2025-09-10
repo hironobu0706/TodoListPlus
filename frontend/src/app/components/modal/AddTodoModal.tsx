@@ -63,6 +63,18 @@ const AddTodoModal = ({ addModalIsOpen, closeAddModal, id }) => {
         location.href = "";
     }
 
+    const updateTodo = async () => {
+        await axios.put(`http://localhost:8080/api/todolist/update`,
+            {
+                id,
+                tag,
+                contents,
+                status,
+                deadline: deadline.format("YYYY-MM-DD")
+            });
+        location.href = "";
+    }
+
     // モーダルのスタイルを設定
     const modalStyle = {
         content: {
@@ -152,13 +164,22 @@ const AddTodoModal = ({ addModalIsOpen, closeAddModal, id }) => {
 
                     {/* 送信ボタン */}
                     <Grid item>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={createTodo}
-                        >
-                            {id ? '更新' : '登録'}
-                        </Button>
+                        {id ?
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={updateTodo}
+                            >
+                                更新
+                            </Button>
+                            :
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={createTodo}
+                            >
+                                登録
+                            </Button>}
                     </Grid>
                     <Grid item>
                         <Button variant="outlined" href="/">キャンセル</Button>
